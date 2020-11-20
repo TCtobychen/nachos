@@ -435,7 +435,41 @@ public class KThread {
     //communicator_test();
     //priorityscheduler_test();
     //boat_test();
+    lotteryscheduler_test();
 
+    }
+    public static void lotteryscheduler_test() {
+        
+        System.out.println("-----start lottery_test-----");
+        KThread thread1 = new KThread(new Runnable() {
+            public void run() {
+                KThread.yield();
+                System.out.println("thread 1 done");
+            }
+        });
+        thread1.setName("thread1");
+        KThread thread2 = new KThread(new Runnable() {
+            public void run() {
+                KThread.yield();
+                System.out.println("thread 2 done");
+            }
+        });
+        thread2.setName("thread2");
+        KThread thread3 = new KThread(new Runnable() {
+            public void run() {
+                KThread.yield();
+                System.out.println("thread 3 done");
+            }
+        });
+        thread3.setName("thread3");
+        boolean status = Machine.interrupt().disable();
+        nachos.threads.ThreadedKernel.scheduler.setPriority(thread1, 2);
+        nachos.threads.ThreadedKernel.scheduler.setPriority(thread2, 6);
+        nachos.threads.ThreadedKernel.scheduler.setPriority(thread3, 4);
+        Machine.interrupt().restore(status);
+        thread1.fork();
+        thread2.fork();
+        thread3.fork();
     }
 
     public static void join_test() {
